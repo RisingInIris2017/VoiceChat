@@ -15,17 +15,17 @@ import org.apache.logging.log4j.Logger;
 
 @Mod(
         modid = VoiceChat.MOD_ID,
-        name = "Gliby\'s Voice Chat Mod",
+        name = "Immersive Voice",
         version = "@VERSION@",
-        acceptedMinecraftVersions = "[1.9,)"
+        acceptedMinecraftVersions = "[1.12.2]"
 )
 public class VoiceChat {
 
-    public static final String MOD_ID = "gvc";
+    public static final String MOD_ID = "imvoice";
     @Instance
     public static VoiceChat instance;
     @SidedProxy(
-            modId = "gvc",
+            modId = "imvoice",
             clientSide = "net.gliby.voicechat.client.VoiceChatClient",
             serverSide = "net.gliby.voicechat.common.VoiceChatServer"
     )

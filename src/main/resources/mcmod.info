@@ -1,15 +1,15 @@
 [
 {
-  "modid": "gvc",
-  "description": "Gliby's Voice Chat mod enables in-game voice communication, as well as support for positional audio. Options are opened by PERIOD by default.",
-  "name": "§aGliby's§f Voice Chat Mod",
+  "modid": "imvoice",
+  "description": "Immersive Voice enables in-game voice communication, as well as support for positional audio. Options are opened by PERIOD by default.",
+  "name": "§aImmersive Voice",
   "version": "@VERSION@",
   "mcversion": "@MC_VERSION@",
   "logoFile": "gvclogo.png",
-  "url": "http://twitter.com/theGliby",
-  "updateUrl": "http://mods.gliby.net/gliby_vc",
+  "url": "",
+  "updateUrl": "",
   "authors": ["@theGliby aka theGliby"],
-  "credits": "Made by @theGliby, updated to 1.12 by @utkabobr",
+  "credits": "Made by @theGliby, updated to 1.12 by @utkabobr, updated to 1.12.2 by the @Vindalia team",
   "parent": "",
   "screenshots": [],
   "dependencies": []

@@ -48,7 +48,7 @@ import java.util.concurrent.Executors;
 
 public class VoiceChatServer {
     public static final String VERSION = "@VERSION@";
-    protected static final Logger LOGGER = LogManager.getLogger((String) "Gliby's Voice Chat Mod");
+    protected static final Logger LOGGER = LogManager.getLogger((String) "Immersive Voice");
     private static final String MC_VERSION = "@MC_VERSION@";
     public ModInfo modInfo;
     public ServerNetwork serverNetwork;

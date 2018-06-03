@@ -72,7 +72,7 @@ public class GuiInGameHandlerVoiceChat extends Gui {
                 String encodedData = ValueFormat.format((long) stats.getEncodedDataReceived(), settings);
                 String decodedData = ValueFormat.format((long) stats.getDecodedDataReceived(), settings);
                 ArrayList<String> right = text.getRight();
-                right.add("Voice Chat Debug Info");
+                right.add("Immersive Voice Debug Info");
                 right.add("VC Data [ENC AVG]: " + encodedAvg + "");
                 right.add("VC Data [DEC AVG]: " + decodedAvg + "");
                 right.add("VC Data [ENC REC]: " + encodedData + "");

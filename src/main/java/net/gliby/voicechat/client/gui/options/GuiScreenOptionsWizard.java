@@ -29,7 +29,7 @@ public class GuiScreenOptionsWizard extends GuiScreen {
     private final MicrophoneTester tester;
     private final Map<GuiButton, Integer> buttonMap = new HashMap<GuiButton, Integer>();
     private final int maxPages = 4;
-    String title = "Voice Chat Setup Wizard.";
+    String title = "Immersive Voice Setup Wizard.";
     String text = "";
     private boolean dirty;
     private String[] textBatch;
@@ -92,7 +92,7 @@ public class GuiScreenOptionsWizard extends GuiScreen {
 
         switch (this.currentPage) {
             case 1:
-                this.title = "Gliby\'s Voice Chat " + I18n.format("menu.setupWizard");
+                this.title = "Immersive Voice " + I18n.format("menu.setupWizard");
                 break;
             case 2:
                 this.title = I18n.format("menu.selectInputDevice");
