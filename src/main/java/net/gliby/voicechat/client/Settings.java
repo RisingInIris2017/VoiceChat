@@ -34,7 +34,8 @@ public class Settings {
     private boolean setupNeeded;
     private boolean snooperEnabled = false;
     private boolean volumeControl = true;
-    private int maxSoundDistance = 63;
+    private int maxSoundDistance = 16;
+    private int fade = 16;
     private boolean voicePlatesAllowed = true;
     private boolean voiceIconsAllowed = true;
     private int bufferSize = 144;
@@ -141,6 +142,14 @@ public class Settings {
 
     public void setSoundDistance(int soundDist) {
         this.maxSoundDistance = soundDist;
+    }
+
+    public int getFade() {
+        return fade;
+    }
+
+    public void setFade(int fade) {
+        this.fade = fade;
     }
 
     public final int getSpeakMode() {

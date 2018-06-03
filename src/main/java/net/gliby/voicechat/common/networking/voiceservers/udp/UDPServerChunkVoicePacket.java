@@ -8,13 +8,16 @@ public class UDPServerChunkVoicePacket extends UDPPacket {
     boolean direct;
     byte chunkSize;
     int entityId;
+    int fade;
+    int distance;
 
-
-    public UDPServerChunkVoicePacket(byte[] samples, int entityID, boolean direct, byte chunkSize) {
+    public UDPServerChunkVoicePacket(byte[] samples, int entityID, boolean direct, byte chunkSize, int fade, int distance) {
         this.data = samples;
         this.entityId = entityID;
         this.direct = direct;
         this.chunkSize = chunkSize;
+        this.fade = fade;
+        this.distance = distance;
     }
 
     @Override
@@ -28,5 +31,7 @@ public class UDPServerChunkVoicePacket extends UDPPacket {
         out.writeByte(this.chunkSize);
         out.writeBoolean(this.direct);
         UDPByteUtilities.writeBytes(this.data, out);
+        out.writeInt(fade);
+        out.writeInt(distance);
     }
 }

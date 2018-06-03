@@ -2,6 +2,7 @@ package net.gliby.voicechat.common.networking.voiceservers.udp;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import net.gliby.voicechat.VoiceChat;
 import net.gliby.voicechat.common.VoiceChatServer;
 import net.gliby.voicechat.common.networking.ServerStreamManager;
 import net.gliby.voicechat.common.networking.voiceservers.EnumVoiceNetworkType;
@@ -9,9 +10,13 @@ import net.gliby.voicechat.common.networking.voiceservers.VoiceAuthenticatedServ
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.DatagramPacket;
+import java.net.MalformedURLException;
 import java.net.SocketException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,7 +64,7 @@ public class UDPVoiceServer extends VoiceAuthenticatedServer {
     public void sendChunkVoiceData(EntityPlayerMP player, int entityID, boolean direct, byte[] samples, byte chunkSize) {
         UDPClient client = this.clientMap.get(player.getEntityId());
         if (client != null) {
-            this.sendPacket(new UDPServerChunkVoicePacket(samples, entityID, direct, chunkSize), client);
+            this.sendPacket(new UDPServerChunkVoicePacket(samples, entityID, direct, chunkSize, VoiceChat.getServerInstance().serverSettings.getFadeRadius(), VoiceChat.getServerInstance().serverSettings.getSoundDistance()), client);
         }
 
     }
@@ -114,7 +119,13 @@ public class UDPVoiceServer extends VoiceAuthenticatedServer {
         String hostname = "0.0.0.0";
         MinecraftServer mc = getMinecraftServer();
         if (mc.isDedicatedServer()) {
-            hostname = mc.getServerHostname();
+            try {
+                URL whatsMyIp = new URL("http://checkip.amazonaws.com");
+                BufferedReader reader = new BufferedReader(new InputStreamReader(whatsMyIp.openStream()));
+                hostname = reader.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         this.server = new UdpServer(VoiceChatServer.getLogger(), hostname, this.voiceChat.getServerSettings().getUDPPort());

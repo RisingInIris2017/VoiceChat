@@ -6,7 +6,7 @@ public class ServerDatalet {
 
     public final EntityPlayerMP player;
     public final int id;
-    public final byte[] data;
+    public byte[] data;
     public boolean end;
     public byte divider;
 

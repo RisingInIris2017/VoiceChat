@@ -46,6 +46,7 @@ public class UDPVoiceServerHandler {
             return;
         }
 
+
         EntityPlayerMP player = this.server.waitingAuth.get(hash);
         if (player != null) {
             UDPClient client = new UDPClient(player, address, hash);
@@ -55,6 +56,7 @@ public class UDPVoiceServerHandler {
             VoiceChat.getLogger().info(client + " has been authenticated by server.");
             this.server.sendPacket(new UDPServerAuthenticationCompletePacket(), client);
         }
+
 
     }
 

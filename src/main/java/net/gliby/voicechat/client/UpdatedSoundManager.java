@@ -4,7 +4,6 @@ import net.gliby.voicechat.VoiceChat;
 import net.minecraft.client.audio.SoundManager;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import paulscode.sound.SoundSystemConfig;
 import paulscode.sound.codecs.CodecJOrbis;
 import paulscode.sound.codecs.CodecWav;
@@ -17,7 +16,7 @@ public class UpdatedSoundManager {
     public UpdatedSoundManager(VoiceChatClient voiceChatClient, SoundManager soundManager) {
     }
 
-    public void init(FMLPreInitializationEvent event) {
+    public void init() {
         Iterator<ModContainer> e = Loader.instance().getModList().iterator();
 
         ModContainer mod;

@@ -52,12 +52,12 @@ public class ClientNetwork {
         }
     }
 
-    public void handleVoiceAuthenticatedServer(boolean showVoicePlates, boolean showVoiceIcons, int minQuality, int maxQuality, int bufferSize, int soundDistance, int voiceServerType, int udpPort, String hash, String ip) {
-        this.startClientNetwork(EnumVoiceNetworkType.values()[voiceServerType], hash, ip, udpPort, soundDistance, bufferSize, minQuality, maxQuality, showVoicePlates, showVoiceIcons);
+    public void handleVoiceAuthenticatedServer(boolean showVoicePlates, boolean showVoiceIcons, int minQuality, int maxQuality, int bufferSize, int soundDistance, int fade, int voiceServerType, int udpPort, String hash, String ip) {
+        this.startClientNetwork(EnumVoiceNetworkType.values()[voiceServerType], hash, ip, udpPort, soundDistance, fade, bufferSize, minQuality, maxQuality, showVoicePlates, showVoiceIcons);
     }
 
-    public void handleVoiceServer(boolean canShowVoicePlates, boolean canShowVoiceIcons, int minQuality, int maxQuality, int bufferSize, int soundDistance, int voiceServerType) {
-        this.startClientNetwork(EnumVoiceNetworkType.values()[voiceServerType], null, null, 0, soundDistance, bufferSize, minQuality, maxQuality, canShowVoicePlates, canShowVoiceIcons);
+    public void handleVoiceServer(boolean canShowVoicePlates, boolean canShowVoiceIcons, int minQuality, int maxQuality, int bufferSize, int soundDistance, int fade, int voiceServerType) {
+        this.startClientNetwork(EnumVoiceNetworkType.values()[voiceServerType], null, null, 0, soundDistance, fade, bufferSize, minQuality, maxQuality, canShowVoicePlates, canShowVoiceIcons);
     }
 
     public final boolean isConnected() {
@@ -70,7 +70,7 @@ public class ClientNetwork {
         }
     }
 
-    public VoiceClient startClientNetwork(EnumVoiceNetworkType type, String hash, String ip, int udpPort, int soundDist, int bufferSize, int soundQualityMin, int soundQualityMax, boolean showVoicePlates, boolean showVoiceIcons) {
+    public VoiceClient startClientNetwork(EnumVoiceNetworkType type, String hash, String ip, int udpPort, int soundDist, int fade, int bufferSize, int soundQualityMin, int soundQualityMax, boolean showVoicePlates, boolean showVoiceIcons) {
         this.voiceChat.sndSystem.refresh();
         this.voiceChat.getSettings().resetQuality();
         if (this.connected) {
@@ -103,13 +103,14 @@ public class ClientNetwork {
         this.voiceChat.getSettings().setBufferSize(bufferSize);
         this.voiceChat.getSettings().setNetworkQuality(soundQualityMin, soundQualityMax);
         this.voiceChat.getSettings().setSoundDistance(soundDist);
+        this.voiceChat.getSettings().setFade(fade);
         this.voiceChat.getSettings().setVoiceIconsAllowed(showVoiceIcons);
         this.voiceChat.getSettings().setVoicePlatesAllowed(showVoicePlates);
         this.voiceClientThread = new Thread(this.voiceClient, "Voice Client");
         this.voiceClientThread.setDaemon(this.voiceClient instanceof VoiceAuthenticatedClient);
         this.voiceClientThread.start();
         this.connected = true;
-        VoiceChatClient.getLogger().info("Connecting to [" + type.name + "] Server, settings[Buffer=" + bufferSize + ", MinQuality=" + soundQualityMin + ", MaxQuality=" + soundQualityMax + ", Distance=" + soundDist + ", Display Voice Icons: " + showVoiceIcons + ", Display Voice Plates: " + showVoicePlates + "]");
+        VoiceChatClient.getLogger().info("Connecting to [" + type.name + "] Server, settings[Buffer=" + bufferSize + ", MinQuality=" + soundQualityMin + ", MaxQuality=" + soundQualityMax + ", Distance=" + soundDist + ", FadeRadius=" + fade + ", Display Voice Icons: " + showVoiceIcons + ", Display Voice Plates: " + showVoicePlates + "]");
         return this.voiceClient;
     }
 
@@ -121,7 +122,7 @@ public class ClientNetwork {
             VoiceChatClient.getLogger().info("Stopped Voice Client.");
         }
         if (this.voiceClientThread != null) {
-            this.voiceClientThread.stop();
+            this.voiceClientThread.interrupt();
         }
         this.voiceClient = null;
         this.voiceClientThread = null;

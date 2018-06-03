@@ -27,6 +27,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -77,6 +78,7 @@ public class VoiceChatClient extends VoiceChatServer {
 
     private SoundManager getMinecraftSoundManager(Minecraft mc) {
         try {
+            VoiceChat.getLogger().info(SoundHandler.class.getDeclaredFields()[5]);
             Field e = SoundHandler.class.getDeclaredFields()[5];
             e.setAccessible(true);
            return (SoundManager) e.get(mc.getSoundHandler());
@@ -97,6 +99,7 @@ public class VoiceChatClient extends VoiceChatServer {
     @Override
     public void initMod(VoiceChat voiceChat, FMLInitializationEvent event) {
         Minecraft mc = Minecraft.getMinecraft();
+        (new UpdatedSoundManager(this, this.getMinecraftSoundManager(mc))).init(); //Moved from PreInit to Init, because of how Minecraft changed his SoundHandler initialization
         this.voiceChat = voiceChat;
         this.recorder = new Recorder(this);
         this.keyManager.init();
@@ -130,7 +133,7 @@ public class VoiceChatClient extends VoiceChatServer {
     @Override
     public void preInitClient(FMLPreInitializationEvent event) {
         Minecraft mc = Minecraft.getMinecraft();
-        (new UpdatedSoundManager(this, this.getMinecraftSoundManager(mc))).init(event);
+        //(new UpdatedSoundManager(this, this.getMinecraftSoundManager(mc))).init(event);
         modMetadata = event.getModMetadata();
         this.configurationDirectory = new File(event.getModConfigurationDirectory(), "gliby_vc");
         if (!this.configurationDirectory.exists()) {

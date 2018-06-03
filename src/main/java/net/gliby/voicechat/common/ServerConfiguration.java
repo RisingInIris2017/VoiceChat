@@ -15,6 +15,7 @@ public class ServerConfiguration {
     private static final String MINIMUM_QUALITY = "MinimumQuality";
     private static final String MAXIMUM_QUALITY = "MaximumQuality";
     private static final String SOUND_DISTANCE = "SoundDistance";
+    private static final String FADE_RADIUS = "FadeRadius";
     private static final String DEFAULT_CHAT_MODE = "DefaultChatMode";
     private static final String UDP_PORT = "UDPPort";
     private static final String NETWORK_TYPE = "NetworkType";
@@ -43,7 +44,8 @@ public class ServerConfiguration {
         if (this.location.exists()) {
             try {
                 this.init = new JINIFile(this.location);
-                this.settings.setSoundDistance(this.init.ReadFloat("Game", "SoundDistance", 64.0F).intValue());
+                this.settings.setSoundDistance(this.init.ReadFloat("Game", "SoundDistance", 16.0F).intValue());
+                this.settings.setFadeRadius(this.init.ReadFloat("Game", "FadeRadius", 16.0F).intValue());
                 this.settings.setDefaultChatMode(this.init.ReadInteger("Game", "DefaultChatMode", 0));
                 this.settings.setCanShowVoiceIcons(this.init.ReadBool("Game", "ShowPlayerIcons", true));
                 this.settings.setCanShowVoicePlates(this.init.ReadBool("Game", "ShowVoicePlates", true));
@@ -73,7 +75,9 @@ public class ServerConfiguration {
         }
 
         this.init.WriteFloat("Game", "SoundDistance", (float) this.settings.getSoundDistance());
-        this.init.WriteComment("Game", "Sound Distance is proximity in which players can hear you! @Whiskey.");
+        this.init.WriteComment("Game", "Sound Distance is proximity in which players can hear you fully! @Whiskey.");
+        this.init.WriteFloat("Game", "FadeRadius", (float) this.settings.getFadeRadius());
+        this.init.WriteComment("Game", "Sound Distance is an additional proximity to @SoundDistance in which players can hear you fading!");
         this.init.WriteInteger("Game", "DefaultChatMode", this.settings.getDefaultChatMode());
         this.init.WriteComment("Game", "DefaultChatMode: 0 - distance based, 1 - world based, 2 - global.");
         this.init.WriteBool("Game", "ShowPlayerIcons", this.settings.canShowVoiceIcons());

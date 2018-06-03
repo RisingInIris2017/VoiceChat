@@ -183,7 +183,7 @@ public class ClientStreamManager {
             stream.buffer.updateJitter(stream.getJitterRate());
             if (stream.buffer.isReady() || stream.needsEnd) {
                 this.voiceChat.sndSystem.flush(identifier);
-                this.voiceChat.sndSystem.feedRawAudioData(identifier, stream.buffer.get());
+                this.voiceChat.sndSystem.feedRawAudioData(identifier, stream.buffer.get()); //TODO: error source
                 stream.buffer.clearBuffer(stream.getJitterRate());
             }
 

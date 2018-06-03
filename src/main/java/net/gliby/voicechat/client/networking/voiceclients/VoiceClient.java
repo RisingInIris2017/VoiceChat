@@ -6,7 +6,6 @@ public abstract class VoiceClient implements Runnable {
 
     protected EnumVoiceNetworkType type;
 
-
     public VoiceClient(EnumVoiceNetworkType enumVoiceServer) {
         this.type = enumVoiceServer;
     }

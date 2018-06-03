@@ -9,7 +9,8 @@ public class ServerSettings {
 
     public int positionUpdateRate = 40;
     private ServerConfiguration configuration;
-    private int soundDist = 64;
+    private int soundDist = 16;
+    private int fadeRadius = 16;
     private int udpPort = 0;
     private int bufferSize = 128;
     private int advancedNetworkType = 1;
@@ -79,6 +80,14 @@ public class ServerSettings {
 
     public void setSoundDistance(int dist) {
         this.soundDist = dist;
+    }
+
+    public int getFadeRadius() {
+        return fadeRadius;
+    }
+
+    public void setFadeRadius(int fadeRadius) {
+        this.fadeRadius = fadeRadius;
     }
 
     public final int getUDPPort() {

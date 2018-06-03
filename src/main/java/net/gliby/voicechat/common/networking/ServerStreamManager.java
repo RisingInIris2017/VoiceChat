@@ -1,11 +1,15 @@
 package net.gliby.voicechat.common.networking;
 
+import net.gliby.voicechat.client.sound.ClientStreamManager;
 import net.gliby.voicechat.common.VoiceChatServer;
 import net.gliby.voicechat.common.api.VoiceChatAPI;
 import net.gliby.voicechat.common.api.events.ServerStreamEvent;
 import net.gliby.voicechat.common.networking.entityhandler.EntityHandler;
 import net.minecraft.entity.player.EntityPlayerMP;
+import org.xiph.speex.SpeexDecoder;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -119,7 +123,7 @@ public class ServerStreamManager {
 
     }
 
-    public void feedWithinEntityWithRadius(ServerStream stream, ServerDatalet voiceData, int distance) {
+    public void feedWithinEntityWithRadius(ServerStream stream, ServerDatalet voiceData, int distance, int fade) {
         EntityPlayerMP speaker = stream.player;
         List players = speaker.world.playerEntities;
         int i;
@@ -135,6 +139,7 @@ public class ServerStreamManager {
                     d5 = speaker.posY - target.posY;
                     d6 = speaker.posZ - target.posZ;
                     if (d4 * d4 + d5 * d5 + d6 * d6 < (double) (distance * distance) && this.voiceChat.getVoiceServer() != null && target != null) {
+                        //Send voice without fade
                         this.voiceChat.getVoiceServer().sendVoiceEnd(target, stream.id);
                     }
                 }
@@ -147,9 +152,26 @@ public class ServerStreamManager {
                     d5 = speaker.posY - target.posY;
                     d6 = speaker.posZ - target.posZ;
                     double distanceBetween = d4 * d4 + d5 * d5 + d6 * d6;
-                    if (distanceBetween < (double) (distance * distance)) {
+                    if (distanceBetween < (double) ( (distance + fade) * (distance + fade) )) {
                         this.entityHandler.whileSpeaking(stream, speaker, target);
-                        this.voiceChat.getVoiceServer().sendChunkVoiceData(target, voiceData.id, true, voiceData.data, voiceData.divider);
+
+                        if (distanceBetween < (distance * distance) ){
+                            this.voiceChat.getVoiceServer().sendChunkVoiceData(target, voiceData.id, true, voiceData.data, voiceData.divider);
+                        }else {
+
+                            if (!(voiceData.data == null)){
+                                double inFade = Math.sqrt(distanceBetween) - distance;
+                                double loudLeft = 1.0d - inFade / ((double) fade);
+
+                                //ToDo test this method to reduce sound volume
+                                //voiceData.data = reduceVolume(voiceData.data, loudLeft);
+
+                                this.voiceChat.getVoiceServer().sendChunkVoiceData(target, voiceData.id, true, voiceData.data, voiceData.divider);
+                            }
+
+                        }
+
+
                         if (stream.tick % this.voiceChat.serverSettings.positionUpdateRate == 0) {
                             if (distanceBetween > 4096.0D) {
                                 this.voiceChat.getVoiceServer().sendEntityPosition(target, speaker.getEntityId(), speaker.posX, speaker.posY, speaker.posZ);
@@ -164,6 +186,25 @@ public class ServerStreamManager {
             }
         }
 
+    }
+
+    /**
+     * Method not tested yet
+     * @param data Sound data
+     * @return Reduced Volume Sound data
+     */
+    private byte[] reduceVolume(byte[] data, double loudRemain) {
+        char USHORT_MASK = '\uffff';
+        ByteBuffer buf = ByteBuffer.wrap(data).order(ByteOrder.LITTLE_ENDIAN);
+        ByteBuffer newBuf = ByteBuffer.allocate(data.length).order(ByteOrder.LITTLE_ENDIAN);
+
+        while (buf.hasRemaining()) {
+            int sample = buf.getShort() & '\uffff';
+            sample *=  loudRemain;
+            newBuf.putShort((short) (sample & '\uffff'));
+        }
+
+        return newBuf.array();
     }
 
     private String generateSource(ServerDatalet let) {

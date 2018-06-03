@@ -31,7 +31,7 @@ public class ServerStreamHandler {
 
         switch (event.stream.chatMode) {
             case 0:
-                event.streamManager.feedWithinEntityWithRadius(event.stream, event.voiceLet, this.voiceChat.getServerSettings().getSoundDistance());
+                event.streamManager.feedWithinEntityWithRadius(event.stream, event.voiceLet, this.voiceChat.getServerSettings().getSoundDistance(), this.voiceChat.getServerSettings().getFadeRadius());
                 break;
             case 1:
                 event.streamManager.feedStreamToWorld(event.stream, event.voiceLet);

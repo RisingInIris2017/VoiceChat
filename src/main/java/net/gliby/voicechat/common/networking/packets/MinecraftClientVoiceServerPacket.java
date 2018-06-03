@@ -15,19 +15,21 @@ public class MinecraftClientVoiceServerPacket extends MinecraftPacket implements
     int maxQuality;
     int bufferSize;
     int soundDistance;
+    int fade;
     int voiceServerType;
 
 
     public MinecraftClientVoiceServerPacket() {
     }
 
-    public MinecraftClientVoiceServerPacket(boolean canShowVoicePlates, boolean canShowVoiceIcons, int minQuality, int maxQuality, int bufferSize, int soundDistance, int voiceServerType) {
+    public MinecraftClientVoiceServerPacket(boolean canShowVoicePlates, boolean canShowVoiceIcons, int minQuality, int maxQuality, int bufferSize, int soundDistance, int fade, int voiceServerType) {
         this.showVoicePlates = canShowVoicePlates;
         this.showVoiceIcons = canShowVoiceIcons;
         this.minQuality = minQuality;
         this.maxQuality = maxQuality;
         this.bufferSize = bufferSize;
         this.soundDistance = soundDistance;
+        this.fade = fade;
         this.voiceServerType = voiceServerType;
     }
 
@@ -39,12 +41,13 @@ public class MinecraftClientVoiceServerPacket extends MinecraftPacket implements
         this.maxQuality = buf.readInt();
         this.bufferSize = buf.readInt();
         this.soundDistance = buf.readInt();
+        this.fade = buf.readInt();
         this.voiceServerType = buf.readInt();
     }
 
     @Override
     public IMessage onMessage(MinecraftClientVoiceServerPacket packet, MessageContext ctx) {
-        VoiceChat.getProxyInstance().getClientNetwork().handleVoiceServer(packet.showVoicePlates, packet.showVoiceIcons, packet.minQuality, packet.maxQuality, packet.bufferSize, packet.soundDistance, packet.voiceServerType);
+        VoiceChat.getProxyInstance().getClientNetwork().handleVoiceServer(packet.showVoicePlates, packet.showVoiceIcons, packet.minQuality, packet.maxQuality, packet.bufferSize, packet.soundDistance, fade, packet.voiceServerType);
         return null;
     }
 
@@ -56,6 +59,7 @@ public class MinecraftClientVoiceServerPacket extends MinecraftPacket implements
         buf.writeInt(this.maxQuality);
         buf.writeInt(this.bufferSize);
         buf.writeInt(this.soundDistance);
+        buf.writeInt(this.fade);
         buf.writeInt(this.voiceServerType);
     }
 }

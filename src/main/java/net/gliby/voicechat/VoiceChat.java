@@ -71,6 +71,8 @@ public class VoiceChat {
 
     @EventHandler
     public void serverAboutToStart(FMLServerAboutToStartEvent event) {
+
+
         proxy.serverAboutToStart(event);
     }
 

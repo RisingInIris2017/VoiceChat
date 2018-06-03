@@ -56,6 +56,8 @@ public class ThreadUpdateStream implements Runnable {
                     stream.player.update(this.mc.world);
                 }
 
+
+
                 try {
                     synchronized (this) {
                         this.wait(25L);
