@@ -2,6 +2,7 @@ package net.gliby.voicechat.client.sound;
 
 import net.gliby.voicechat.VoiceChat;
 import net.gliby.voicechat.client.VoiceChatClient;
+import net.gliby.voicechat.client.sound.custom.AudioOutput;
 import net.gliby.voicechat.client.sound.thread.ThreadSoundQueue;
 import net.gliby.voicechat.client.sound.thread.ThreadUpdateStream;
 import net.gliby.voicechat.common.PlayerProxy;
@@ -30,6 +31,7 @@ public class ClientStreamManager {
     public ConcurrentLinkedQueue<Datalet> queue = new ConcurrentLinkedQueue<Datalet>();
     public ConcurrentHashMap<Integer, ClientStream> streaming = new ConcurrentHashMap<Integer, ClientStream>();
     public ConcurrentHashMap<Integer, PlayerProxy> playerData = new ConcurrentHashMap<Integer, PlayerProxy>();
+    private AudioOutput output;
     private Thread threadUpdate;
     private ThreadSoundQueue threadQueue;
     private boolean volumeControlActive;
@@ -44,6 +46,8 @@ public class ClientStreamManager {
         this.mc = mc;
         this.voiceChat = voiceChatClient;
         this.soundPreProcessor = new SoundPreProcessor(voiceChatClient, mc);
+        this.output = new AudioOutput();
+        output.start();
     }
 
     public static AudioFormat getUniversalAudioFormat() {
@@ -182,8 +186,9 @@ public class ClientStreamManager {
             stream.buffer.push(data.data);
             stream.buffer.updateJitter(stream.getJitterRate());
             if (stream.buffer.isReady() || stream.needsEnd) {
-                this.voiceChat.sndSystem.flush(identifier);
-                this.voiceChat.sndSystem.feedRawAudioData(identifier, stream.buffer.get()); //TODO: error source
+                //this.voiceChat.sndSystem.flush(identifier);
+                //this.voiceChat.sndSystem.feedRawAudioData(identifier, stream.buffer.get()); //TODO: error source
+                output.addToQueue(stream.buffer.get()); //Custom audio output
                 stream.buffer.clearBuffer(stream.getJitterRate());
             }
 

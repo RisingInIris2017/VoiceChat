@@ -19,7 +19,6 @@ import java.util.List;
 public class SoundPreProcessor {
 
     VoiceChatClient voiceChat;
-    AudioOutput output;
     Statistics stats;
     SpeexDecoder decoder;
     byte[] buffer;
@@ -28,8 +27,6 @@ public class SoundPreProcessor {
     public SoundPreProcessor(VoiceChatClient voiceChat, Minecraft mc) {
         this.voiceChat = voiceChat;
         this.stats = VoiceChatClient.getStatistics();
-        this.output = new AudioOutput();
-        output.start();
     }
 
     public static List<byte[]> divideArray(byte[] source, int chunksize) {
@@ -115,8 +112,7 @@ public class SoundPreProcessor {
                 }
 
 
-                //VoiceChatClient.getSoundManager().addQueue(decodedData, direct, id); // error source
-                output.addToQueue(decodedData); //This will work but all features need to be recoded to work, this is dirty
+                VoiceChatClient.getSoundManager().addQueue(decodedData, direct, id); // error source
                 if (this.stats != null) {
                     this.stats.addEncodedSamples(encodedSamples.length);
                     this.stats.addDecodedSamples(decodedData.length);
