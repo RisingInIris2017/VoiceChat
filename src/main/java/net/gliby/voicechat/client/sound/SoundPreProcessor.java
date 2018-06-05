@@ -110,6 +110,9 @@ public class SoundPreProcessor {
                     decodedData = adjustVolume(decodedData, (float) loudLeft);
 
                 }
+                else {
+                    decodedData = adjustVolume(decodedData, 1.0F);
+                }
 
 
                 //VoiceChatClient.getSoundManager().addQueue(decodedData, direct, id); // error source
@@ -129,6 +132,7 @@ public class SoundPreProcessor {
 
 
     private byte[] adjustVolume(byte[] audioSamples, float volume) {
+        float finiteVolume = volume * this.voiceChat.getSettings().getWorldVolume();
         byte[] array = new byte[audioSamples.length];
         for (int i = 0; i < array.length; i+=2) {
             // convert byte pair to int
@@ -139,7 +143,7 @@ public class SoundPreProcessor {
             buf2 = (short) (buf2 & 0xff);
 
             short res= (short) (buf1 | buf2);
-            res = (short) (res * volume);
+            res = (short) (res * finiteVolume);
 
             // convert back
             array[i] = (byte) res;
