@@ -135,7 +135,7 @@ public class VoiceChatClient extends VoiceChatServer {
         Minecraft mc = Minecraft.getMinecraft();
         //(new UpdatedSoundManager(this, this.getMinecraftSoundManager(mc))).init(event);
         modMetadata = event.getModMetadata();
-        this.configurationDirectory = new File(event.getModConfigurationDirectory(), "gliby_vc");
+        this.configurationDirectory = new File(event.getModConfigurationDirectory(), "immersivevoice");
         if (!this.configurationDirectory.exists()) {
             this.configurationDirectory.mkdir();
         }

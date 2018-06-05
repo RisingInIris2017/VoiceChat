@@ -192,7 +192,7 @@ public class VoiceChatServer {
     public void aboutToStartServer(FMLServerAboutToStartEvent event) {
         FMLCommonHandler.instance().bus().register(new ServerConnectionHandler(this));
         this.serverSettings = new ServerSettings(this);
-        this.configurationDirectory = new File("config/gliby_vc");
+        this.configurationDirectory = new File("config/immersivevoice");
         if (!this.configurationDirectory.exists()) {
             this.configurationDirectory.mkdir();
         }
